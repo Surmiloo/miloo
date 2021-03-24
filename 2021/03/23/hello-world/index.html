@@ -237,7 +237,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年3月23日 下午
+                  本文最后更新于：2021年3月24日 上午
                 
               </p>
             
@@ -285,6 +285,41 @@
             </div>
 
             
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.lazyComments('gitalk-container', function() {
+      Fluid.utils.createCssLink('/miloo/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', function () {
+        var gitalk = new Gitalk({
+          clientID: 'e8ce813c7c3eb1e836be',
+          clientSecret: '6d9b0e9b03701cf78d12040ef791b3d6275abbbe',
+          repo: 'miloo',
+          owner: 'Surmiloo',
+          admin: ["Surmiloo"],
+          id: '6c5c4fba17205f3821f0ce5ec027b759',
+          language: 'zh-CN',
+          labels: ["Gitalk"],
+          perPage: 50,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: true,
+          proxy: '&lt;your own proxy&gt;/https://github.com/login/oauth/access_token'
+        });
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
           </article>
         </div>
       </div>
@@ -302,12 +337,6 @@
 </div>
 
 <!-- Custom -->
-
-  <div class="col-lg-7 mx-auto nopadding-x-md">
-    <div class="container custom post-custom mx-auto">
-      <img src="https://octodex.github.com/img/jetpacktocat.png" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
-    </div>
-  </div>
 
 
     
@@ -350,6 +379,30 @@
      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
   </div>
   
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
 
   
 
