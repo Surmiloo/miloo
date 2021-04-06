@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      2k 字
     </span>
   
 
@@ -243,7 +243,7 @@
             
             <div class="markdown-body">
               <h1 id="入侵过程分析手册"><a href="#入侵过程分析手册" class="headerlink" title="入侵过程分析手册"></a>入侵过程分析手册</h1><blockquote>
-<p>Tip:本文存在大量钓鱼行为，请读者自行补充。<br>若有小伙伴愿意提供部分被入侵攻击日志的样本，本人将不胜感激。<br>此处只发布web容器及部分中间件的入侵日志分析，后门及webshell排查另开新帖。</p>
+<p>Tip:本文存在大量钓鱼行为，请读者自行补充。<br>若有小伙伴愿意提供部分被入侵攻击日志的样本，本人将不胜感激。<br>此处只发布web容器及部分中间件的入侵日志分析，后门及webshell排查另开新帖。<br>大部分的Web日志只记录了GET类型的参数请求，而无法详尽的记录POST请求，这个给Web日志还原攻击数据带来极大的局限性。</p>
 </blockquote>
 <h1 id="1-Apache"><a href="#1-Apache" class="headerlink" title="1 Apache"></a>1 Apache</h1><h2 id="1-1-日志位置"><a href="#1-1-日志位置" class="headerlink" title="1.1 日志位置"></a>1.1 日志位置</h2><p>Apache 日志位置，可通过过滤 <code>CustomLog</code> 字段的方式查找</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">grep CustomLog /usr/<span class="hljs-built_in">local</span>/etc/apache22/httpd.conf<br>grep CustomLog /etc/apache2/apache2.conf<br>grep CustomLog /etc/httpd/conf/httpd.conf<br></code></pre></td></tr></table></figure>
