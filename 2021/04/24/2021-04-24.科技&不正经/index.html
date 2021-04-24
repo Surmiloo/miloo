@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/miloo/img/images/favicon.png">
+  <link rel="icon" href="/miloo/img/images/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="miloo">
+  <meta name="keywords" content="">
+  
+  <title>科技&amp;不正经周刊 第4期 闭源的胜利？ - miloo&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/miloo/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/miloo/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"surmiloo.github.io","root":"/miloo/","version":"1.8.9a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/images/loading.gif","onlypost":true,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/miloo/js/utils.js" ></script>
+  <script  src="/miloo/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/miloo/">&nbsp;<strong>迷鹿-miloo</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/miloo/img/images/shouye.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="科技&不正经周刊 第4期 闭源的胜利？">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-24 00:00" pubdate>
+        2021年4月24日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">科技&amp;不正经周刊 第4期 闭源的胜利？</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年4月24日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="科技-amp-不正经周刊"><a href="#科技-amp-不正经周刊" class="headerlink" title="科技&amp;不正经周刊"></a>科技&amp;不正经周刊</h1><ul>
+<li><a href="#%E7%A7%91%E6%8A%80%E4%B8%8D%E6%AD%A3%E7%BB%8F%E5%91%A8%E5%88%8A">科技&amp;不正经周刊</a><ul>
+<li><a href="#%E6%9C%AC%E5%91%A8%E8%AF%9D%E9%A2%98-%E9%97%AD%E6%BA%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%9C%E5%88%A9">本周话题: 闭源系统的胜利？</a></li>
+<li><a href="#1-%E4%B8%8D%E8%A6%81%E5%90%83%E8%BF%87%E6%9C%9F%E7%9A%84%E9%A3%9F%E7%89%A9">1 不要吃过期的食物</a></li>
+<li><a href="#2-%E4%B8%96%E7%95%8C%E7%BC%96%E7%A8%8B%E5%A4%A7%E8%B5%9B%E5%86%A0%E5%86%9B%E4%BD%9C%E5%93%81">2 世界编程大赛冠军作品</a></li>
+<li><a href="#3-nm-%E5%B7%A5%E8%89%BA%E6%B0%B4%E5%B9%B3%E6%88%96%E8%80%85%E5%B7%B2%E7%BB%8F%E6%97%A0%E6%B3%95%E7%A7%91%E5%AD%A6%E6%8F%8F%E8%BF%B0%E5%BD%93%E4%B8%8B%E7%9A%84%E6%8A%80%E6%9C%AF%E6%B0%B4%E5%B9%B3">3 nm 工艺水平或者已经无法科学描述当下的技术水平</a></li>
+<li><a href="#4-%E5%A4%AA%E7%A9%BA%E9%87%8D%E5%9E%8B%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%8E%9F%E5%9E%8B">4 太空重型机器人原型</a></li>
+<li><a href="#5-openssl-%E7%9A%84%E6%9B%BF%E4%BB%A3%E5%93%81-rustls">5 Openssl 的替代品 Rustls</a></li>
+<li><a href="#6-%E5%BC%80%E6%BA%90%E5%A6%82%E4%BD%95%E4%B8%8E%E5%95%86%E4%B8%9A%E7%BB%84%E7%BB%87%E5%8F%96%E5%BE%97%E5%B9%B3%E8%A1%A1">6 开源如何与商业组织取得平衡</a></li>
+<li><a href="#7-%E6%8C%A4%E7%89%99%E8%86%8F%E5%BC%8F%E7%9A%84%E4%BA%A7%E5%93%81%E6%88%96%E8%AE%B8%E5%B7%B2%E7%BB%8F%E4%B8%8D%E5%86%8D%E9%80%82%E7%94%A8%E4%BA%8E%E5%BD%93%E5%89%8D%E7%9A%84%E5%B8%82%E5%9C%BA">7 挤牙膏式的产品或许已经不再适用于当前的市场</a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Tip: 这里记录值得分享的科技内容，每周六发布。欢迎投稿或者推荐科技内容。</p>
+</blockquote>
+<h2 id="本周话题-闭源系统的胜利？"><a href="#本周话题-闭源系统的胜利？" class="headerlink" title="本周话题: 闭源系统的胜利？"></a>本周话题: 闭源系统的胜利？</h2><p>4月21日，苹果召开春季发布会，发布了搭载M1芯片的两款 iPad pro 。这是闭源系统胜利的号角。</p>
+<p>对操作系统稍微有所了解的人都会知道，日常使用的图形接口或者说图形化界面只是操作系统的一个服务，虽然我不是很了解苹果的iOS和mac OS的区别，我想，让 iPad 在不同的使用环境下切换不同的图形化界面只是微不足道的小功能，只要苹果想那么做，就可以立即实现。（linux新手都明白的道理）</p>
+<p>iPad pro 或许将迅速抢占 windows 平板的市场，然后病毒式的发展……</p>
+<p>M1芯片为什么强？它的性能超过了intel，功耗更小，而且更便宜：</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Mo4y1Z7jb?from=search&seid=937749768936899329">M1性能功耗比(功耗直接跳转到28分)</a></p>
+<p>不过苹果的这个举动也是一个坏现象的开始，M1 这样的 SoC 的成功，意味着其他的厂商会很快的效仿，最终的笔记本移动端会发展成如今智能手机的局面，每个厂商的设计都不一样，是一个封闭的黑箱，一旦厂商停止维护，你的手机就是等待淘汰的砖头。</p>
+<p>闭源发展的终点是垄断，所有的市场将会被少数几个大公司主宰，这将是最终的局面。</p>
+<h2 id="1-不要吃过期的食物"><a href="#1-不要吃过期的食物" class="headerlink" title="1 不要吃过期的食物"></a>1 不要吃过期的食物</h2><p>因失眠、感觉障碍和精神错乱被送到急诊室，原因只是吃了放置五天的寿司。</p>
+<p>虽然我们很难吃到真正意义上“干净”的食物，但至少不要去吃过期的食物。</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xZ4y1c7cx?p=1">一位女子吃了放了五天的寿司，她的大脑是这样停止工作的</a></p>
+<h2 id="2-世界编程大赛冠军作品"><a href="#2-世界编程大赛冠军作品" class="headerlink" title="2 世界编程大赛冠军作品"></a>2 世界编程大赛冠军作品</h2><p>程序员： 我写的hello world 为什么有512M？</p>
+<p>我感觉这种的就两个原因：一个是程序行业和内存行业之间的潜规则，另一个就是减少技术难度和码奴培训时间成本</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV12y4y1t7nx">仅64KB大小可以媲美3A大作的3DCG动画</a></p>
+<h2 id="3-nm-工艺水平或者已经无法科学描述当下的技术水平"><a href="#3-nm-工艺水平或者已经无法科学描述当下的技术水平" class="headerlink" title="3 nm 工艺水平或者已经无法科学描述当下的技术水平"></a>3 nm 工艺水平或者已经无法科学描述当下的技术水平</h2><p>摩尔定律还会继续存在并发展，随着晶体管密度更好，成本效益也会更高，受益的不知是逻辑芯片，内存、闪存芯片也会从摩尔定律中受益——黄汉森(台积电研发负责人)</p>
+<p>同时他还表示，xx nm工艺水平已经无法科学的表述当前的技术水平，建议引采用新的指标来衡量半导体工艺的进展。</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qJ411u7fk">nm工艺已沦为营销游戏</a></p>
+<h2 id="4-太空重型机器人原型"><a href="#4-太空重型机器人原型" class="headerlink" title="4 太空重型机器人原型"></a>4 太空重型机器人原型</h2><p>2021年3月18日，日本的 Human Machinery Co 与 JR West集团 公开了太空重型工作机的PoC原型，并且以此为开端，将展开一项使太空重型机器早日商业化的开发项目。</p>
+<p><a target="_blank" rel="noopener" href="https://prtimes.jp/main/html/rd/amp/p/000000002.000070266.html">新闻稿件</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1gh411D7KL">机器人视频</a></p>
+<h2 id="5-Openssl-的替代品-Rustls"><a href="#5-Openssl-的替代品-Rustls" class="headerlink" title="5 Openssl 的替代品 Rustls"></a>5 Openssl 的替代品 Rustls</h2><p>由于许多 SSL/TLS 库是用C语言写的，所以安全问题早受到诟病。现在这个问题有了解决办法，Rustls是一个Rust实现的TLS库，它将有效解决C语言TLS库造成的的内存安全问题。</p>
+<p>此外，在性能上Rustls也有着极大的提升</p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">rustls发送数据快<span class="hljs-number">15</span><span class="hljs-comment">%。</span><br>rustls接收数据快<span class="hljs-number">5</span><span class="hljs-comment">%。</span><br>建立客户端连接会快<span class="hljs-number">20</span>-<span class="hljs-number">40</span><span class="hljs-comment">%。</span><br>建立服务器连接会快<span class="hljs-number">10</span><span class="hljs-comment">%。</span><br>恢复客户端连接会快<span class="hljs-number">30</span>-<span class="hljs-number">70</span><span class="hljs-comment">%。</span><br>恢复服务器连接会快<span class="hljs-number">10</span>-<span class="hljs-number">20</span><span class="hljs-comment">%。</span><br>rustls使用的内存不到OpenSSL的一半。<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-开源如何与商业组织取得平衡"><a href="#6-开源如何与商业组织取得平衡" class="headerlink" title="6 开源如何与商业组织取得平衡"></a>6 开源如何与商业组织取得平衡</h2><p>过去几年，多个知名的开源项目如 Elastic、Redis Labs 和 MongoDB 出于盈利考虑而修改许可证，切换到非自由的商业授权许可证（SSPL）。开发 Grafana 以及 Loki 和 Tempo 等开源项目的 Grafana Labs 公司决定不这么做，它宣布旗下核心开源项目采用的许可证从 Apache License 2.0 切换到 AGPL v3，允许其他人自由修改和提供服务，但修改的版本需要回馈上游。Grafana Labs 公司表示，它这么做是试图在开源和社区的“价值创造”以及商业化策略的“价值获取”上取得平衡。</p>
+<h2 id="7-挤牙膏式的产品或许已经不再适用于当前的市场"><a href="#7-挤牙膏式的产品或许已经不再适用于当前的市场" class="headerlink" title="7 挤牙膏式的产品或许已经不再适用于当前的市场"></a>7 挤牙膏式的产品或许已经不再适用于当前的市场</h2><p>挤牙膏式产品指靠着每一代微薄的更新、升级，来不断获利的产品。例如：intel</p>
+<p>最近发现一个奇怪的现象，移动笔记本市场发布的新品很多，在4月22日，联想更是在5分钟发布了7款笔记本产品,发布会一开始就进入了价格环节，期望能够凭借价格优势和多种类的选择获得比较好市场反馈。</p>
+<p>但每一次靠着微量升级的产品真的能够每年都获得较好的市场收益吗？</p>
+<p>看看水果今年的春季发布会，就会知道，还是水果会做生意。</p>
+<p>牙膏还是多挤一些。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/miloo/categories/%E5%91%A8%E5%88%8A/">周刊</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/%E7%A7%91%E6%8A%80/">科技</a>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/%E4%B8%8D%E6%AD%A3%E7%BB%8F/">不正经</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/miloo/2021/04/21/2021-04-21.Rust%E6%96%B9%E6%B3%95/">
+                        <span class="hidden-mobile">Rust 方法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.lazyComments('gitalk-container', function() {
+      Fluid.utils.createCssLink('/miloo/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', function () {
+        var gitalk = new Gitalk({
+          clientID: 'e8ce813c7c3eb1e836be',
+          clientSecret: '6d9b0e9b03701cf78d12040ef791b3d6275abbbe',
+          repo: 'miloo',
+          owner: 'Surmiloo',
+          admin: ["Surmiloo"],
+          id: '53ecd6e7027b5349fef1a5a4a06d92e9',
+          language: 'zh-CN',
+          labels: ["Gitalk"],
+          perPage: 50,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: true,
+          proxy: 'https://shielded-brushlands-08810.herokuapp.com/https://github.com/login/oauth/access_token'
+        });
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/miloo/js/debouncer.js" ></script>
+<script  src="/miloo/js/events.js" ></script>
+<script  src="/miloo/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    
+      <script  src="/miloo/js/img-lazyload.js" ></script>
+    
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/miloo/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/miloo/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/miloo/js/boot.js" ></script>
+
+
+</body>
+</html>
