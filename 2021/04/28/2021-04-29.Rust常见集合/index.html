@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/miloo/img/images/favicon.png">
+  <link rel="icon" href="/miloo/img/images/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="miloo">
+  <meta name="keywords" content="">
+  
+  <title>Rust 常用集合 - miloo&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/miloo/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/miloo/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"surmiloo.github.io","root":"/miloo/","version":"1.8.9a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/images/loading.gif","onlypost":true,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/miloo/js/utils.js" ></script>
+  <script  src="/miloo/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/miloo/">&nbsp;<strong>迷鹿-miloo</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/miloo/img/images/shouye.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Rust 常用集合">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-28 17:40" pubdate>
+        2021年4月28日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Rust 常用集合</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年4月29日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="Rust-常用集合"><a href="#Rust-常用集合" class="headerlink" title="Rust 常用集合"></a>Rust 常用集合</h1><ul>
+<li><a href="#rust-%E5%B8%B8%E7%94%A8%E9%9B%86%E5%90%88">Rust 常用集合</a></li>
+<li><a href="#1-vector">1 Vector</a><ul>
+<li><a href="#11-%E5%88%9B%E5%BB%BA-vector">1.1 创建 vector</a></li>
+<li><a href="#12-%E5%90%91-vector-%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0">1.2 向 vector 添加元素</a></li>
+<li><a href="#13-%E5%88%A0%E9%99%A4-vector">1.3 删除 vector</a></li>
+<li><a href="#14-%E8%AF%BB%E5%8F%96-vactor-%E7%9A%84%E5%85%83%E7%B4%A0">1.4 读取 vactor 的元素</a></li>
+<li><a href="#15-%E6%89%80%E6%9C%89%E6%9D%83%E5%80%9F%E7%94%A8%E5%92%8C%E9%81%8D%E5%8E%86">1.5 所有权、借用和遍历</a></li>
+<li><a href="#16-%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%82%A8%E5%AD%98%E5%A4%9A%E7%A7%8D%E7%B1%BB%E5%9E%8B">1.6 使用枚举来储存多种类型</a></li>
+</ul>
+</li>
+<li><a href="#2-string">2 String</a><ul>
+<li><a href="#21-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%AE%9A%E4%B9%89">2.1 字符串的定义</a></li>
+<li><a href="#22-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA-string">2.2 创建一个 String</a></li>
+<li><a href="#23-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9B%B4%E6%96%B0">2.3 字符串的更新</a><ul>
+<li><a href="#231-push_str">2.3.1 push_str()</a></li>
+<li><a href="#231-push">2.3.1 push()</a></li>
+</ul>
+</li>
+<li><a href="#24-%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2">2.4 拼接字符串</a><ul>
+<li><a href="#241-">2.4.1 +</a></li>
+<li><a href="#242-format">2.4.2 format!</a></li>
+</ul>
+</li>
+<li><a href="#25-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%BD%A2%E5%BC%8F%E8%AE%BF%E9%97%AE-string">2.5 索引的形式访问 String</a></li>
+<li><a href="#26-string%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%86%85%E9%83%A8%E8%A1%A8%E7%A4%BA">2.6 String类型的内部表示</a></li>
+<li><a href="#27-%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%81%8D%E5%8E%86">2.7 字符串遍历</a><ul>
+<li><a href="#271-%E5%AD%97%E8%8A%82">2.7.1 字节</a></li>
+<li><a href="#272-%E6%A0%87%E9%87%8F%E5%80%BC">2.7.2 标量值</a></li>
+<li><a href="#273-%E5%AD%97%E5%BD%A2%E7%B0%87%E6%A0%87%E5%87%86%E5%BA%93%E6%9C%AA%E6%8F%90%E4%BE%9B%E5%AD%97%E5%BD%A2%E7%B0%87%E5%8A%9F%E8%83%BD">2.7.3 字形簇(标准库未提供字形簇功能)</a></li>
+</ul>
+</li>
+<li><a href="#28-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%87%E7%89%87">2.8 字符串切片</a></li>
+</ul>
+</li>
+<li><a href="#3-hashmap">3 hashmap</a><ul>
+<li><a href="#31-hashmapk-v">3.1 HashMap&lt;K, V&gt;</a></li>
+<li><a href="#32-%E5%88%9B%E5%BB%BA-hashmap">3.2 创建 HashMap</a><ul>
+<li><a href="#321-new-%E5%87%BD%E6%95%B0%E5%88%9B%E5%BB%BA-hashmap">3.2.1 new 函数创建 HashMap</a></li>
+<li><a href="#322-collect-%E6%96%B9%E6%B3%95%E5%88%9B%E5%BB%BA-hashmap">3.2.2 collect 方法创建 HashMap</a></li>
+</ul>
+</li>
+<li><a href="#33-hashmap-%E5%92%8C%E6%89%80%E6%9C%89%E6%9D%83">3.3 HashMap 和所有权</a></li>
+<li><a href="#34-%E9%81%8D%E5%8E%86%E8%AE%BF%E9%97%AE-hashmap-%E4%B8%AD%E7%9A%84%E5%80%BC">3.4 遍历/访问 HashMap 中的值</a></li>
+<li><a href="#35-%E6%9B%B4%E6%96%B0-hashmap">3.5 更新 HashMap</a></li>
+<li><a href="#36-%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0">3.6 哈希函数</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="1-Vector"><a href="#1-Vector" class="headerlink" title="1 Vector"></a>1 Vector</h1><ul>
+<li>Vec<T>, 叫做 vector (由标准库提供，可以存储多个数据类型相同的值, 值在内存中连续存放，heap)</li>
+<li>vector 可以存放任何类型的数据</li>
+</ul>
+<h2 id="1-1-创建-vector"><a href="#1-1-创建-vector" class="headerlink" title="1.1 创建 vector"></a>1.1 创建 vector</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> v: <span class="hljs-built_in">Vec</span>&lt;<span class="hljs-built_in">u64</span>&gt; = <span class="hljs-built_in">Vec</span>::new();<br>    <span class="hljs-comment">// rust 具备极强的参数类型推断能力，new() 为新建的空 vector 所以需要设置数据类型</span><br><br>    <span class="hljs-keyword">let</span> v2 = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>    <span class="hljs-comment">// 指定初始值的方式创建 vector, vec! 为宏</span><br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:#?&#125;\n&#123;:#?&#125;&quot;</span>, v1, v2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-2-向-vector-添加元素"><a href="#1-2-向-vector-添加元素" class="headerlink" title="1.2 向 vector 添加元素"></a>1.2 向 vector 添加元素</h2><ul>
+<li>使用 push 方法</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> v1: <span class="hljs-built_in">Vec</span>&lt;<span class="hljs-built_in">u64</span>&gt; = <span class="hljs-built_in">Vec</span>::new();<br>    <span class="hljs-comment">// rust 具备极强的参数类型推断能力，new() 为新建的空 vector 所以需要设置数据类型</span><br><br>    <span class="hljs-keyword">let</span> v2 = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>    <span class="hljs-comment">// 指定初始值的方式创建 vector</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> v3 = <span class="hljs-built_in">Vec</span>::new();<br><br>    v3.push(<span class="hljs-number">1</span>);<br>    v3.push(<span class="hljs-number">2</span>);<br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:#?&#125;\n&#123;:#?&#125;\n&#123;:#?&#125;&quot;</span>, v1, v2, v3);<br>&#125;    <span class="hljs-comment">// &lt;- 这里 v1 v2 v3 离开作用域并被丢弃</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="1-3-删除-vector"><a href="#1-3-删除-vector" class="headerlink" title="1.3 删除 vector"></a>1.3 删除 vector</h2><ul>
+<li>与任何其它 struct 一样，当离开作用域后会被清理，包含的元素也一同被清理</li>
+</ul>
+<h2 id="1-4-读取-vactor-的元素"><a href="#1-4-读取-vactor-的元素" class="headerlink" title="1.4 读取 vactor 的元素"></a>1.4 读取 vactor 的元素</h2><ol>
+<li>索引</li>
+<li>get 方法</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> v1: <span class="hljs-built_in">Vec</span>&lt;<span class="hljs-built_in">u64</span>&gt; = <span class="hljs-built_in">Vec</span>::new();<br>    <span class="hljs-comment">// rust 具备极强的参数类型推断能力，new() 为新建的空 vector 所以需要设置数据类型</span><br><br>    <span class="hljs-keyword">let</span> v2 = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>    <span class="hljs-comment">// 指定初始值的方式创建 vector</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> v3 = <span class="hljs-built_in">Vec</span>::new();<br><br>    v3.push(<span class="hljs-number">1</span>);<br>    v3.push(<span class="hljs-number">2</span>);<br>    v3.push(<span class="hljs-number">3</span>);<br>    v3.push(<span class="hljs-number">4</span>);<br>    v3.push(<span class="hljs-number">5</span>);<br><br>    <span class="hljs-keyword">let</span> third: &amp;<span class="hljs-built_in">i32</span> = &amp;v3[<span class="hljs-number">2</span>];    <span class="hljs-comment">// 使用索引 访问第三个元素 vector 从 0 开始，超出索引范围会引起 panic</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The third element is &#123;&#125;&quot;</span>, third);<br><br>    <span class="hljs-keyword">match</span> v3.get(<span class="hljs-number">3</span>) &#123;    <span class="hljs-comment">// 使用 match 处理 option 方法，</span><br>        <span class="hljs-comment">// get 方法不会处理超出 vector 范围的错误，会返回 None</span><br>        <span class="hljs-literal">Some</span>(four) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The third element is &#123;&#125;&quot;</span>, four),<br>        <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;There is no third element.&quot;</span>),<br>    &#125;<br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:#?&#125;\n&#123;:#?&#125;\n&#123;:#?&#125;&quot;</span>, v1, v2, v3);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-5-所有权、借用和遍历"><a href="#1-5-所有权、借用和遍历" class="headerlink" title="1.5 所有权、借用和遍历"></a>1.5 所有权、借用和遍历</h2><ul>
+<li>不能在同一作用域内同时拥有可变和不可变引用</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> v1: <span class="hljs-built_in">Vec</span>&lt;<span class="hljs-built_in">u64</span>&gt; = <span class="hljs-built_in">Vec</span>::new();<br>    <span class="hljs-comment">// rust 具备极强的参数类型推断能力，new() 为新建的空 vector 所以需要设置数据类型</span><br><br>    <span class="hljs-keyword">let</span> v2 = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>    <span class="hljs-comment">// 指定初始值的方式创建 vector</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> v3 = <span class="hljs-built_in">Vec</span>::new();<br><br>    v3.push(<span class="hljs-number">1</span>);<br>    v3.push(<span class="hljs-number">2</span>);<br>    v3.push(<span class="hljs-number">3</span>);<br>    v3.push(<span class="hljs-number">4</span>);<br>    v3.push(<span class="hljs-number">5</span>);<br><br>    <span class="hljs-keyword">let</span> third: &amp;<span class="hljs-built_in">i32</span> = &amp;v3[<span class="hljs-number">2</span>];    <span class="hljs-comment">// 使用索引 访问第三个元素 vector 从 0 开始，超出索引范围会引起 panic</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The third element is &#123;&#125;&quot;</span>, third);<br><br>    <span class="hljs-keyword">match</span> v3.get(<span class="hljs-number">3</span>) &#123;    <span class="hljs-comment">// 使用 match 处理 option 方法，</span><br>        <span class="hljs-comment">// get 方法不会处理超出 vector 范围的错误，会返回 None</span><br>        <span class="hljs-literal">Some</span>(four) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The third element is &#123;&#125;&quot;</span>, four),<br>        <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;There is no third element.&quot;</span>),<br>    &#125;<br><br>    <span class="hljs-comment">// let first = &amp;v3[0];    // 不可变借用</span><br><br>    v3.push(<span class="hljs-number">6</span>);    <span class="hljs-comment">// 修改，可变借用</span><br><br>    <span class="hljs-comment">// println!(&quot;The first element is &#123;&#125;&quot;, first);    // 不可变借用</span><br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> &amp;v3 &#123;    <span class="hljs-comment">// 不可变的引用</span><br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, i);<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> &amp;<span class="hljs-keyword">mut</span> v3 &#123;    <span class="hljs-comment">// 使用可变的引用修改元素的值</span><br>        *i += <span class="hljs-number">50</span>;    <span class="hljs-comment">// * 解引用</span><br>    &#125;<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> v3 &#123;    <span class="hljs-comment">// 打印修改后的内容</span><br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, i);<br>    &#125;<br><br>    <span class="hljs-comment">// println!(&quot;&#123;:#?&#125;\n&#123;:#?&#125;\n&#123;:#?&#125;&quot;, v1, v2, v3);</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-6-使用枚举来储存多种类型"><a href="#1-6-使用枚举来储存多种类型" class="headerlink" title="1.6 使用枚举来储存多种类型"></a>1.6 使用枚举来储存多种类型</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-meta">#[derive(Debug)]</span><br><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">SpreadsheetCell</span></span> &#123;    <span class="hljs-comment">// 典型的表格案例，规定每一行的字段类型</span><br>    Int(<span class="hljs-built_in">i32</span>),    <span class="hljs-comment">// 整数</span><br>    Float(<span class="hljs-built_in">f64</span>),    <span class="hljs-comment">// 小数</span><br>    Text(<span class="hljs-built_in">String</span>),    <span class="hljs-comment">// 文字</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> row = <span class="hljs-built_in">vec!</span>[    <span class="hljs-comment">// 表示一行的内容</span><br>    SpreadsheetCell::Int(<span class="hljs-number">3</span>),    <span class="hljs-comment">// 存放一个整数3</span><br>    SpreadsheetCell::Text(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;blue&quot;</span>)),    <span class="hljs-comment">// 颜色为蓝色</span><br>    SpreadsheetCell::Float(<span class="hljs-number">10.12</span>),    <span class="hljs-comment">// 小数 10.12</span><br>    ];<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:#?&#125;&quot;</span>, row);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="2-String"><a href="#2-String" class="headerlink" title="2 String"></a>2 String</h1><p>Rust 中的字符串</p>
+<ul>
+<li>Rust 倾向与暴露可能的错误</li>
+<li>字符串数据结构复杂</li>
+<li>UTF-8 </li>
+<li>Byte 的集合</li>
+</ul>
+<h2 id="2-1-字符串的定义"><a href="#2-1-字符串的定义" class="headerlink" title="2.1 字符串的定义"></a>2.1 字符串的定义</h2><ul>
+<li><p>Rust 的核心语言层面，只有一个字符串类型：字符串切片 str (或 &amp;str)</p>
+</li>
+<li><p>字符串切片：对存储在其它地方，UTF-8 编码的字符串的引用(字符串字面值：存储在二进制文件中，也是字符串切片)</p>
+</li>
+<li><p>String类型</p>
+</li>
+</ul>
+<ol>
+<li>来自标准库而不是核心语言</li>
+<li>可增长、可修改、可拥有</li>
+<li>UTF-8</li>
+</ol>
+<ul>
+<li>其它类型的字符串：OsString、OsStr、CString、CStr</li>
+</ul>
+<ol>
+<li>以 String 后缀结尾的可以获得所有权，以 Str 结尾的为借用或者变体</li>
+</ol>
+<h2 id="2-2-创建一个-String"><a href="#2-2-创建一个-String" class="headerlink" title="2.2 创建一个 String"></a>2.2 创建一个 String</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s1 = <span class="hljs-built_in">String</span>::new();    <span class="hljs-comment">// 创建一个空的字符串赋值给 s1</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;1&quot;</span>, s1);<br><br>    <span class="hljs-keyword">let</span> data = <span class="hljs-string">&quot;initial contents&quot;</span>;<br>    <span class="hljs-keyword">let</span> s2 = data.to_string();    <span class="hljs-comment">// 使用 to_string 方法将打他转化为字符串</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;2&quot;</span>, s2);<br><br>    <span class="hljs-keyword">let</span> s3 = <span class="hljs-string">&quot;initial contents&quot;</span>.to_string();    <span class="hljs-comment">// to_string 方法的另一种用法</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;3&quot;</span>, s3);<br><br>    <span class="hljs-keyword">let</span> s4 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;initial contents&quot;</span>);    <span class="hljs-comment">// 使用 String::from 函数转化为字符串</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;4&quot;</span>, s4);<br><br>    <span class="hljs-comment">// UTF-8</span><br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;السلام عليكم&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Dobrý den&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Hello&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;שָׁלוֹם&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;नमस्ते&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;こんにちは&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;안녕하세요&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;你好&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Olá&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Здравствуйте&quot;</span>);<br>    <span class="hljs-keyword">let</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Hola&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-3-字符串的更新"><a href="#2-3-字符串的更新" class="headerlink" title="2.3 字符串的更新"></a>2.3 字符串的更新</h2><h3 id="2-3-1-push-str"><a href="#2-3-1-push-str" class="headerlink" title="2.3.1 push_str()"></a>2.3.1 push_str()</h3><ul>
+<li>把一个字符串切片附加到 String</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;foo&quot;</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;1.&#123;&#125;&quot;</span>, s1);<br>    s1.push_str(<span class="hljs-string">&quot;bar&quot;</span>);    <span class="hljs-comment">// push_str 方法将 bar 添加到 s1 字符串的后面</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;2.&#123;&#125;&quot;</span>, s1);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s2 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;foo&quot;</span>);<br>    <span class="hljs-keyword">let</span> s3 = <span class="hljs-string">&quot;bar&quot;</span>;<br>    s2.push_str(s3);    <span class="hljs-comment">// 同 s2.push_str(&amp;s3); // push_str 方法合并字符串</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s2 is &#123;&#125;&quot;</span>, s2);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s3 is &#123;&#125;&quot;</span>, s3);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-3-1-push"><a href="#2-3-1-push" class="headerlink" title="2.3.1 push()"></a>2.3.1 push()</h3><ul>
+<li>把单个字符附加到 String</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;lo&quot;</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;1.&#123;&#125;&quot;</span>, s1);<br>    s1.push(<span class="hljs-string">&#x27;l&#x27;</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;2.&#123;&#125;&quot;</span>, s1);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-4-拼接字符串"><a href="#2-4-拼接字符串" class="headerlink" title="2.4 拼接字符串"></a>2.4 拼接字符串</h2><h3 id="2-4-1"><a href="#2-4-1" class="headerlink" title="2.4.1 +"></a>2.4.1 +</h3><ul>
+<li><ul>
+<li>运算符使用了类似add函数的方法：fn add(self, s: &amp;str) -&gt; String {}</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>标准库中的 add 方法使用了泛型</li>
+<li>第一个参数 self 取得了第一个参数的所有权，所以字符串拼接之后第一个参数失效</li>
+<li>只能把 &amp;str 添加到 String</li>
+<li>解引用强制转换 deref coercion</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Hello, &quot;</span>);<br>    <span class="hljs-keyword">let</span> s2 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;world!&quot;</span>);<br>    <span class="hljs-keyword">let</span> s3 = s1 + &amp;s2;    <span class="hljs-comment">// + 格式：前一个字符串要求为字符串类型，第二个字符串要求为字符串切片类型（实际第二个字符为 String 类型的引用）</span><br>    <span class="hljs-comment">// println!(&quot;1.&#123;&#125;&quot;, s1);    // s1 被移动了，不能继续使用</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;2.&#123;&#125;&quot;</span>, s2);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;3.&#123;&#125;&quot;</span>, s3);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-4-2-format"><a href="#2-4-2-format" class="headerlink" title="2.4.2 format!"></a>2.4.2 format!</h3><ul>
+<li>format! 宏</li>
+<li>不会取得任何字符串的所有权</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;tic&quot;</span>);<br>    <span class="hljs-keyword">let</span> s2 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;tac&quot;</span>);<br>    <span class="hljs-keyword">let</span> s3 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;toe&quot;</span>);<br>    <span class="hljs-keyword">let</span> s4 = s1 + <span class="hljs-string">&quot;-&quot;</span> + &amp;s2 + <span class="hljs-string">&quot;-&quot;</span> + &amp;s3;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s4:&#123;&#125;&quot;</span>, s4);<br><br>    <span class="hljs-keyword">let</span> s5 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;tic&quot;</span>);<br>    <span class="hljs-keyword">let</span> s6 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;tac&quot;</span>);<br>    <span class="hljs-keyword">let</span> s7 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;toe&quot;</span>);<br>    <span class="hljs-keyword">let</span> s8 = <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;&#123;&#125;-&#123;&#125;-&#123;&#125;&quot;</span>, s5, s6, s7);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s8:&#123;&#125;&quot;</span>, s8);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s5:&#123;&#125;&quot;</span>, s5);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s6:&#123;&#125;&quot;</span>, s6);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;s7:&#123;&#125;&quot;</span>, s7);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-5-索引的形式访问-String"><a href="#2-5-索引的形式访问-String" class="headerlink" title="2.5 索引的形式访问 String"></a>2.5 索引的形式访问 String</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// rust 字符串类型不支持索引类型访问</span><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Hello&quot;</span>);<br>    <span class="hljs-keyword">let</span> h = s1[<span class="hljs-number">0</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="2-6-String类型的内部表示"><a href="#2-6-String类型的内部表示" class="headerlink" title="2.6 String类型的内部表示"></a>2.6 String类型的内部表示</h2><ul>
+<li>String 是对 Vec<u8> 的包装</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// len 方法</span><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> len1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Hello&quot;</span>).len();<br>    <span class="hljs-comment">// 每一个 Unicode 标量值 占用一个字节</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, len1);<br>    <span class="hljs-keyword">let</span> len2 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Здравствуйте&quot;</span>).len();<br>    <span class="hljs-comment">// 每一个 Unicode 标量值 对应两个字节，并非所有字符串对应一个有效的 Unicode 标量</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, len2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-7-字符串遍历"><a href="#2-7-字符串遍历" class="headerlink" title="2.7 字符串遍历"></a>2.7 字符串遍历</h2><ul>
+<li>Rust 内部如何看待字符串：</li>
+</ul>
+<ol>
+<li>字节</li>
+<li>标量值</li>
+<li>字形簇(最接近所谓的字母)</li>
+</ol>
+<ul>
+<li>Rust 不允许对 String 进行索引的最后一个原因：</li>
+</ul>
+<ol>
+<li>索引操作应消耗一个常量时间(O(1))</li>
+<li>而 Striing 无法保证：需要遍历所有内容，来确定有多少个合法的字符。</li>
+</ol>
+<h3 id="2-7-1-字节"><a href="#2-7-1-字节" class="headerlink" title="2.7.1 字节"></a>2.7.1 字节</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> w = <span class="hljs-string">&quot;नमस्ते&quot;</span>;    <span class="hljs-comment">// 梵文书写的印度语单词</span><br><br>    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> w.bytes() &#123;    <span class="hljs-comment">// bytes 方法获取字符串对应的所有字节</span><br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, b);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-7-2-标量值"><a href="#2-7-2-标量值" class="headerlink" title="2.7.2 标量值"></a>2.7.2 标量值</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> w = <span class="hljs-string">&quot;नमस्ते&quot;</span>;    <span class="hljs-comment">// 梵文书写的印度语单词</span><br><br>    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> w.chars() &#123;    <span class="hljs-comment">// chars 方法获取字符串类型为 char 的遍历结果，对应 unicode 标量值</span><br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, b);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 输出结果：</span><br>न<br>म<br>स<br>    <span class="hljs-comment">// 音标不显示</span><br>त<br>    <span class="hljs-comment">// 音标不显示</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-7-3-字形簇-标准库未提供字形簇功能"><a href="#2-7-3-字形簇-标准库未提供字形簇功能" class="headerlink" title="2.7.3 字形簇(标准库未提供字形簇功能)"></a>2.7.3 字形簇(标准库未提供字形簇功能)</h3><h2 id="2-8-字符串切片"><a href="#2-8-字符串切片" class="headerlink" title="2.8 字符串切片"></a>2.8 字符串切片</h2><ul>
+<li>允许切割字符串</li>
+<li>但必须沿着字符边界切割否则就会引起 panic</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> s1 = <span class="hljs-string">&quot;Здравствуйте&quot;</span>;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;1.&#123;&#125;&quot;</span>, s1);<br>    <span class="hljs-keyword">let</span> s2 = &amp;s1[<span class="hljs-number">0</span>..<span class="hljs-number">4</span>];<br>    <span class="hljs-comment">// let s2 = &amp;s1[0..1];    // 引起 panic</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;2.&#123;&#125;&quot;</span>, s1);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;2.&#123;&#125;&quot;</span>, s2);<br>    <span class="hljs-keyword">let</span> s3 = <span class="hljs-string">&quot;helloworld&quot;</span>;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;3.&#123;&#125;&quot;</span>, s3);<br>    <span class="hljs-keyword">let</span> s4 = &amp;s3[<span class="hljs-number">0</span>..<span class="hljs-number">4</span>];<br>    <span class="hljs-keyword">let</span> s5 = &amp;s3[<span class="hljs-number">0</span>..<span class="hljs-number">1</span>];<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;4.&#123;&#125;&quot;</span>, s3);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;4.&#123;&#125;&quot;</span>, s4);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;4.&#123;&#125;&quot;</span>, s5);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="3-hashmap"><a href="#3-hashmap" class="headerlink" title="3 hashmap"></a>3 hashmap</h1><h2 id="3-1-HashMap-lt-K-V-gt"><a href="#3-1-HashMap-lt-K-V-gt" class="headerlink" title="3.1 HashMap&lt;K, V&gt;"></a>3.1 HashMap&lt;K, V&gt;</h2><ul>
+<li>键值对的形式存储数据，一个键(Key)对应一个值(Value)</li>
+<li>Hash 函数：决定如何在内存中存放 K 和 V</li>
+<li>适用场景：通过 K 来寻找数据，并非索引</li>
+</ul>
+<h2 id="3-2-创建-HashMap"><a href="#3-2-创建-HashMap" class="headerlink" title="3.2 创建 HashMap"></a>3.2 创建 HashMap</h2><ul>
+<li>HashMap 用的比较少，所以不在预导入模块</li>
+<li>标准库对 HashMap 支持比较少，没有内置的宏来创建 HashMap</li>
+<li>数据存储在 heap 上</li>
+<li>HashMap 是同构的：一个 HashMap 中所有的 key 必须是同一种类型，value 必须是同一种类型</li>
+</ul>
+<h3 id="3-2-1-new-函数创建-HashMap"><a href="#3-2-1-new-函数创建-HashMap" class="headerlink" title="3.2.1 new 函数创建 HashMap"></a>3.2.1 new 函数创建 HashMap</h3><ul>
+<li>创建空 HashMap: new() 函数</li>
+<li>添加数据: insert() 方法</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::collections::HashMap;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> scores1: HashMap&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">i32</span>&gt; = HashMap::new();<br>    <span class="hljs-comment">// scores1 确定 HashMap 的 key 和 value</span><br>    <br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> scores2 = HashMap::new();<br>    <span class="hljs-comment">// 不确定 hashmap 格式的时候，可以直接使用 insert 插入带格式的 key 和 value</span><br>    scores2.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>), <span class="hljs-number">10</span>);<br>    scores2.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Yellow&quot;</span>), <span class="hljs-number">50</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-collect-方法创建-HashMap"><a href="#3-2-2-collect-方法创建-HashMap" class="headerlink" title="3.2.2 collect 方法创建 HashMap"></a>3.2.2 collect 方法创建 HashMap</h3><ul>
+<li>在元素类型为 Tuple 的 Vector 上使用 collect 方法，可以组件一个 HashMap</li>
+</ul>
+<ol>
+<li>要求 Tuple 有两个值： 一个作为 K, 一个作为 V</li>
+<li>collect方法可以把数据整合成很多中集合类型，包括 HashMap (返回值需要显式指明类型)</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::collections::HashMap;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> teams  = <span class="hljs-built_in">vec!</span>[<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>), <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Yellow&quot;</span>)];<br>    <span class="hljs-comment">// 第一个 Vector 为 String 类型，作为队伍的名称</span><br>    <span class="hljs-keyword">let</span> initial_scores = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">10</span>, <span class="hljs-number">50</span>];<br>    <span class="hljs-comment">// 第二个类型为 i32 作为两队的分数</span><br>    <br>    <span class="hljs-keyword">let</span> scores: HashMap&lt;_, _&gt; = teams.iter().zip(initial_scores.iter()).collect();<br>    <span class="hljs-comment">// 在两个 vector 上调用 iter 方法，再使用zip方法，就可以产生一个元组的数组，zip有拉链的意思，这两个数组就像拉链一样拉在一起了</span><br>    <span class="hljs-comment">// 然后再调用 collet 就可以创建一个HashMap</span><br>    <span class="hljs-comment">// 必须指明 scores 的类型为 HashMap 否则会报错</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-3-HashMap-和所有权"><a href="#3-3-HashMap-和所有权" class="headerlink" title="3.3 HashMap 和所有权"></a>3.3 HashMap 和所有权</h2><ul>
+<li>对于实现了 Copy trait 的类型，值会被复制到 HashMap 中，如：i32</li>
+<li>对于拥有所有权的值，会被移动，所有权会转移给 HashMap，如：String</li>
+<li>在 HashMap 有效期间内，有效的值必须保持有效</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::collections::HashMap;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> field_name = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Favorite color&quot;</span>);<br>    <span class="hljs-keyword">let</span> field_value = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> map = HashMap::new();<br>    map.insert(&amp;field_name, &amp;field_value);<br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;: &#123;&#125;&quot;</span>, field_name, field_value);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-4-遍历-访问-HashMap-中的值"><a href="#3-4-遍历-访问-HashMap-中的值" class="headerlink" title="3.4 遍历/访问 HashMap 中的值"></a>3.4 遍历/访问 HashMap 中的值</h2><ul>
+<li>get方法:</li>
+</ul>
+<ol>
+<li>参数: K</li>
+<li>返回: Option&lt;&amp;V&gt;</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::collections::HashMap;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> scores = HashMap::new();<br><br>    scores.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>), <span class="hljs-number">10</span>);<br>    scores.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Yellow&quot;</span>), <span class="hljs-number">50</span>);<br>    <br>    <span class="hljs-keyword">for</span> (key, value) <span class="hljs-keyword">in</span> &amp;scores &#123;<br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;: &#123;&#125;&quot;</span>, key, value);<br>    &#125;<br><br>    <span class="hljs-keyword">let</span> team_name = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>);<br>    <span class="hljs-keyword">let</span> score = scores.get(&amp;team_name);<br><br>    <span class="hljs-keyword">match</span> score &#123;<br>        <span class="hljs-literal">Some</span>(s) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, s),<br>        <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;team not exist&quot;</span>),<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-5-更新-HashMap"><a href="#3-5-更新-HashMap" class="headerlink" title="3.5 更新 HashMap"></a>3.5 更新 HashMap</h2><ul>
+<li>HashMap 大小可变</li>
+<li>每个 K 同时只能对应一个 V</li>
+<li>更新 HashMap 中的数据：</li>
+</ul>
+<ol>
+<li>K 已经存在，对应一个 V: 1替换现有的V; 2保留现有的V,忽略新的V; 3合并现有的V和新的V</li>
+<li>K 不存在: 添加一对 K, V</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::collections::HashMap;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-comment">// 覆盖：K 已经存在，替换现有的 V</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> scores1 = HashMap::new();<br>    scores1.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>), <span class="hljs-number">10</span>);<br>    scores1.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>), <span class="hljs-number">25</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, scores1);<br><br>    <span class="hljs-comment">// K 不存在: 添加一对 K, V</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> scores2 = HashMap::new();<br>    scores2.insert(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>), <span class="hljs-number">10</span>);<br>    scores2.entry(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Yellow&quot;</span>)).or_insert(<span class="hljs-number">50</span>);    <span class="hljs-comment">// 使用 entry 判断是否存在 Yellow,如果不存在，插入 K: yellow,V: 50</span><br>    scores2.entry(<span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;Blue&quot;</span>)).or_insert(<span class="hljs-number">30</span>);    <span class="hljs-comment">// 判断是否存在 Blue,如果不存在，插入 K: Blue, V: 30</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, scores2);<br><br>    <span class="hljs-comment">// 基于现有 V 更新 V</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> scores3 = HashMap::new();<br>    <span class="hljs-keyword">let</span> text = <span class="hljs-string">&quot;hello world wonderful world&quot;</span>;<br>    <span class="hljs-keyword">for</span> word <span class="hljs-keyword">in</span> text.split_whitespace() &#123;    <span class="hljs-comment">// split_whitespace() 方法用空格分割 text ， 分割成可以用 for 循环遍历的遍历器</span><br>        <span class="hljs-keyword">let</span> count = scores3.entry(word).or_insert(<span class="hljs-number">0</span>);<br>        *count +=<span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:#?&#125;&quot;</span>, scores3);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="3-6-哈希函数"><a href="#3-6-哈希函数" class="headerlink" title="3.6 哈希函数"></a>3.6 哈希函数</h2><p>HashMap 默认使用一种 “密码学安全的”（“cryptographically strong” ）哈希函数，它可以抵抗拒绝服务（Denial of Service, DoS）攻击。然而这并不是可用的最快的算法，不过为了更高的安全性值得付出一些性能的代价。如果性能监测显示此哈希函数非常慢，以致于你无法接受，你可以指定一个不同的 hasher 来切换为其它函数。hasher 是一个实现了 BuildHasher trait 的类型。第十章会讨论 trait 和如何实现它们。你并不需要从头开始实现你自己的 hasher；<a href="crates.io">crates.io</a> 有其他人分享的实现了许多常用哈希算法的 hasher 的库。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/miloo/categories/%E8%AF%AD%E8%A8%80/">语言</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/Rust/">Rust</a>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/%E7%BB%83%E4%B9%A0/">练习</a>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/%E6%80%BB%E7%BB%93/">总结</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/miloo/2021/04/27/2021-04-27.Rust%E5%8C%85_crate_%E6%A8%A1%E5%9D%97/">
+                        <span class="hidden-mobile">Rust 包 crate 模块</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.lazyComments('gitalk-container', function() {
+      Fluid.utils.createCssLink('/miloo/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', function () {
+        var gitalk = new Gitalk({
+          clientID: 'e8ce813c7c3eb1e836be',
+          clientSecret: '6d9b0e9b03701cf78d12040ef791b3d6275abbbe',
+          repo: 'miloo',
+          owner: 'Surmiloo',
+          admin: ["Surmiloo"],
+          id: 'c25b57f550ceceda8d0bc11836862294',
+          language: 'zh-CN',
+          labels: ["Gitalk"],
+          perPage: 50,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: true,
+          proxy: 'https://shielded-brushlands-08810.herokuapp.com/https://github.com/login/oauth/access_token'
+        });
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/miloo/js/debouncer.js" ></script>
+<script  src="/miloo/js/events.js" ></script>
+<script  src="/miloo/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    
+      <script  src="/miloo/js/img-lazyload.js" ></script>
+    
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/miloo/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/miloo/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/miloo/js/boot.js" ></script>
+
+
+</body>
+</html>
