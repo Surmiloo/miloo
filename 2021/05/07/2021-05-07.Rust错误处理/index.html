@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/miloo/img/images/favicon.png">
+  <link rel="icon" href="/miloo/img/images/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="miloo">
+  <meta name="keywords" content="">
+  
+  <title>Rust 错误处理 - miloo&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/miloo/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/miloo/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"surmiloo.github.io","root":"/miloo/","version":"1.8.9a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/images/loading.gif","onlypost":true,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/miloo/js/utils.js" ></script>
+  <script  src="/miloo/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/miloo/">&nbsp;<strong>迷鹿-miloo</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/miloo/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/miloo/img/images/shouye.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Rust 错误处理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-05-07 12:24" pubdate>
+        2021年5月7日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Rust 错误处理</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年5月7日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><ul>
+<li><a href="#rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86">Rust 错误处理</a></li>
+<li><a href="#1-%E4%B8%8D%E5%8F%AF%E6%81%A2%E5%A4%8D%E9%94%99%E8%AF%AFunrecoverable">1 不可恢复错误（unrecoverable）</a><ul>
+<li><a href="#11-panic-%E7%9A%84%E7%94%A8%E6%B3%95">1.1 panic! 的用法</a></li>
+<li><a href="#12-%E7%B4%A2%E5%BC%95%E8%B6%85%E5%87%BA%E8%8C%83%E5%9B%B4">1.2 索引超出范围</a></li>
+</ul>
+</li>
+<li><a href="#2-%E5%8F%AF%E6%81%A2%E5%A4%8D%E9%94%99%E8%AF%AFrecoverable">2 可恢复错误（recoverable）</a><ul>
+<li><a href="#21-result-%E6%9E%9A%E4%B8%BE%E4%B8%8E%E5%8F%AF%E6%81%A2%E5%A4%8D%E7%9A%84%E9%94%99%E8%AF%AF">2.1 Result 枚举与可恢复的错误</a></li>
+<li><a href="#22-%E5%8C%B9%E9%85%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E9%94%99%E8%AF%AF">2.2 匹配不同的错误</a></li>
+<li><a href="#23-%E5%A4%B1%E8%B4%A5%E6%97%B6-panic-%E7%9A%84%E7%AE%80%E5%86%99unwrap-%E5%92%8C-expect">2.3 失败时 panic 的简写：unwrap 和 expect</a><ul>
+<li><a href="#231-unwrap">2.3.1 unwrap</a></li>
+<li><a href="#232-expect">2.3.2 expect</a></li>
+</ul>
+</li>
+<li><a href="#24-%E4%BC%A0%E6%92%AD%E9%94%99%E8%AF%AF">2.4 传播错误</a></li>
+<li><a href="#25-%E4%BC%A0%E6%92%AD%E9%94%99%E8%AF%AF%E7%9A%84%E7%AE%80%E5%86%99-%E8%BF%90%E7%AE%97%E7%AC%A6">2.5 传播错误的简写：? 运算符</a><ul>
+<li><a href="#251--%E4%B8%8E-from-%E5%87%BD%E6%95%B0">2.5.1 ? 与 from 函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8-panic">3 什么时候使用 panic!</a><ul>
+<li><a href="#31-%E4%BD%BF%E7%94%A8-panic-%E7%9A%84%E6%83%85%E5%86%B5">3.1 使用 panic! 的情况</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="1-不可恢复错误（unrecoverable）"><a href="#1-不可恢复错误（unrecoverable）" class="headerlink" title="1 不可恢复错误（unrecoverable）"></a>1 不可恢复错误（unrecoverable）</h1><ul>
+<li>bug, 索引超出范围等</li>
+<li>Panic! </li>
+</ul>
+<blockquote>
+<p>当出现 panic 时，程序默认会开始 展开（unwinding），这意味着 Rust 会回溯栈并清理它遇到的每一个函数的数据，不过这个回溯并清理的过程有很多工作。<br>另一种选择是直接 终止（abort），这会不清理数据就退出程序。那么程序所使用的内存需要由操作系统来清理。<br>如果你需要项目的最终二进制文件越小越好，panic 时通过在 Cargo.toml 的 [profile] 部分增加 panic = ‘abort’，可以由展开切换为终止。</p>
+</blockquote>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust">[profile.release]    <span class="hljs-comment">// 生产环境中</span><br>panic = <span class="hljs-symbol">&#x27;abort</span>&#x27;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-1-panic-的用法"><a href="#1-1-panic-的用法" class="headerlink" title="1.1 panic! 的用法"></a>1.1 panic! 的用法</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;crash and burn&quot;</span>)    <span class="hljs-comment">// panic! 宏执行后，后面语句失效，所以 ; 可以不敲</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-2-索引超出范围"><a href="#1-2-索引超出范围" class="headerlink" title="1.2 索引超出范围"></a>1.2 索引超出范围</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-comment">// panic!(&quot;crash and burn&quot;)</span><br>    <span class="hljs-keyword">let</span> v =<span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>    v[<span class="hljs-number">99</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 报错</span><br><br>thread <span class="hljs-symbol">&#x27;main</span>&#x27; panicked at <span class="hljs-symbol">&#x27;index</span> out of bounds: the len is <span class="hljs-number">3</span> but the index is <span class="hljs-number">99</span>&#x27;, src/main.rs:<span class="hljs-number">6</span>:<span class="hljs-number">5</span><br>note: run with `RUST_BACKTRACE=<span class="hljs-number">1</span>` environment variable to display a backtrace<br><br><span class="hljs-comment">// export RUST_BACKTRACE=1 &amp;&amp; cargo run</span><br><br>thread <span class="hljs-symbol">&#x27;main</span>&#x27; panicked at <span class="hljs-symbol">&#x27;index</span> out of bounds: the len is <span class="hljs-number">3</span> but the index is <span class="hljs-number">99</span>&#x27;, src/main.rs:<span class="hljs-number">6</span>:<span class="hljs-number">5</span><br>stack backtrace:<br>   <span class="hljs-number">0</span>:     <span class="hljs-number">0x5587fa309ba0</span> - std::backtrace_rs::backtrace::libunwind::trace::h74532f8b485906a1<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/../../backtrace/src/backtrace/libunwind.rs:<span class="hljs-number">90</span>:<span class="hljs-number">5</span><br>   <span class="hljs-number">1</span>:     <span class="hljs-number">0x5587fa309ba0</span> - std::backtrace_rs::backtrace::trace_unsynchronized::h2c8425dd0be5999b<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/../../backtrace/src/backtrace/<span class="hljs-keyword">mod</span>.rs:<span class="hljs-number">66</span>:<span class="hljs-number">5</span><br>   <span class="hljs-number">2</span>:     <span class="hljs-number">0x5587fa309ba0</span> - std::sys_common::backtrace::_print_fmt::hd8ce6577f46119ce<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/sys_common/backtrace.rs:<span class="hljs-number">67</span>:<span class="hljs-number">5</span><br>   <span class="hljs-number">3</span>:     <span class="hljs-number">0x5587fa309ba0</span> - &lt;std::sys_common::backtrace::_print::DisplayBacktrace <span class="hljs-keyword">as</span> core::fmt::Display&gt;::fmt::h6289eeebc1f97d57<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/sys_common/backtrace.rs:<span class="hljs-number">46</span>:<span class="hljs-number">22</span><br>   <span class="hljs-number">4</span>:     <span class="hljs-number">0x5587fa31fd9f</span> - core::fmt::write::h3d3f8a8bb9d4c367<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/core/src/fmt/<span class="hljs-keyword">mod</span>.rs:<span class="hljs-number">1092</span>:<span class="hljs-number">17</span><br>   <span class="hljs-number">5</span>:     <span class="hljs-number">0x5587fa308822</span> - std::io::Write::write_fmt::ha117cbfa72664a7b<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/io/<span class="hljs-keyword">mod</span>.rs:<span class="hljs-number">1572</span>:<span class="hljs-number">15</span><br>   <span class="hljs-number">6</span>:     <span class="hljs-number">0x5587fa30b845</span> - std::sys_common::backtrace::_print::h112e8a4ac2720a21<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/sys_common/backtrace.rs:<span class="hljs-number">49</span>:<span class="hljs-number">5</span><br>   <span class="hljs-number">7</span>:     <span class="hljs-number">0x5587fa30b845</span> - std::sys_common::backtrace::print::h2a4ab5824600ebce<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/sys_common/backtrace.rs:<span class="hljs-number">36</span>:<span class="hljs-number">9</span><br>   <span class="hljs-number">8</span>:     <span class="hljs-number">0x5587fa30b845</span> - std::panicking::default_hook::&#123;&#123;closure&#125;&#125;::h399ab06c3b83a1f2<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">208</span>:<span class="hljs-number">50</span><br>   <span class="hljs-number">9</span>:     <span class="hljs-number">0x5587fa30b2f3</span> - std::panicking::default_hook::h7481e93ca9c2d739<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">225</span>:<span class="hljs-number">9</span><br>  <span class="hljs-number">10</span>:     <span class="hljs-number">0x5587fa30be4d</span> - std::panicking::rust_panic_with_hook::h01f9d4e9485ccb8b<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">591</span>:<span class="hljs-number">17</span><br>  <span class="hljs-number">11</span>:     <span class="hljs-number">0x5587fa30b9e7</span> - std::panicking::begin_panic_handler::&#123;&#123;closure&#125;&#125;::h25bff4eb752cc444<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">497</span>:<span class="hljs-number">13</span><br>  <span class="hljs-number">12</span>:     <span class="hljs-number">0x5587fa30a05c</span> - std::sys_common::backtrace::__rust_end_short_backtrace::h5dfd3f7920e58cc5<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/sys_common/backtrace.rs:<span class="hljs-number">141</span>:<span class="hljs-number">18</span><br>  <span class="hljs-number">13</span>:     <span class="hljs-number">0x5587fa30b949</span> - rust_begin_unwind<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">493</span>:<span class="hljs-number">5</span><br>  <span class="hljs-number">14</span>:     <span class="hljs-number">0x5587fa2f4131</span> - core::panicking::panic_fmt::h5673e42e796a7b06<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/core/src/panicking.rs:<span class="hljs-number">92</span>:<span class="hljs-number">14</span><br>  <span class="hljs-number">15</span>:     <span class="hljs-number">0x5587fa2f40f2</span> - core::panicking::panic_bounds_check::h683ff5e3e4d1c401<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/core/src/panicking.rs:<span class="hljs-number">69</span>:<span class="hljs-number">5</span><br>  <span class="hljs-number">16</span>:     <span class="hljs-number">0x5587fa2f58be</span> - &lt;<span class="hljs-built_in">usize</span> <span class="hljs-keyword">as</span> core::slice::index::SliceIndex&lt;[T]&gt;&gt;::index::he32c8c9a7dcb5ee5<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:<span class="hljs-number">182</span>:<span class="hljs-number">10</span><br>  <span class="hljs-number">17</span>:     <span class="hljs-number">0x5587fa2f5846</span> - core::slice::index::&lt;<span class="hljs-keyword">impl</span> core::ops::index::Index&lt;I&gt; <span class="hljs-keyword">for</span> [T]&gt;::index::hf5b72d819a54999b<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/index.rs:<span class="hljs-number">15</span>:<span class="hljs-number">9</span><br>  <span class="hljs-number">18</span>:     <span class="hljs-number">0x5587fa2f4f87</span> - &lt;alloc::vec::<span class="hljs-built_in">Vec</span>&lt;T,A&gt; <span class="hljs-keyword">as</span> core::ops::index::Index&lt;I&gt;&gt;::index::h74c5612525406521<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/<span class="hljs-keyword">mod</span>.rs:<span class="hljs-number">2381</span>:<span class="hljs-number">9</span><br>  <span class="hljs-number">19</span>:     <span class="hljs-number">0x5587fa2f4c2b</span> - cuowu::main::h4704c7d70fe39380<br>                               at /home/<span class="hljs-number">1</span>.docs/<span class="hljs-number">4</span>.语言审计/<span class="hljs-number">01</span>.Rust/<span class="hljs-number">09</span>.练习/<span class="hljs-number">009</span>.Panic/<span class="hljs-number">01</span>.cuowu/src/main.rs:<span class="hljs-number">6</span>:<span class="hljs-number">5</span><br>  <span class="hljs-number">20</span>:     <span class="hljs-number">0x5587fa2f54cb</span> - core::ops::function::<span class="hljs-built_in">FnOnce</span>::call_once::hed29983cc1be0579<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/function.rs:<span class="hljs-number">227</span>:<span class="hljs-number">5</span><br>  <span class="hljs-number">21</span>:     <span class="hljs-number">0x5587fa2f493e</span> - std::sys_common::backtrace::__rust_begin_short_backtrace::h8b98187aa87fefb3<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys_common/backtrace.rs:<span class="hljs-number">125</span>:<span class="hljs-number">18</span><br>  <span class="hljs-number">22</span>:     <span class="hljs-number">0x5587fa2f5bb1</span> - std::rt::lang_start::&#123;&#123;closure&#125;&#125;::h1555331141147226<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/rt.rs:<span class="hljs-number">66</span>:<span class="hljs-number">18</span><br>  <span class="hljs-number">23</span>:     <span class="hljs-number">0x5587fa30c24a</span> - core::ops::function::impls::&lt;<span class="hljs-keyword">impl</span> core::ops::function::<span class="hljs-built_in">FnOnce</span>&lt;A&gt; <span class="hljs-keyword">for</span> &amp;F&gt;::call_once::ha7db63b609be77e3<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/core/src/ops/function.rs:<span class="hljs-number">259</span>:<span class="hljs-number">13</span><br>  <span class="hljs-number">24</span>:     <span class="hljs-number">0x5587fa30c24a</span> - std::panicking::try::do_call::h715c8c8ca0806d14<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">379</span>:<span class="hljs-number">40</span><br>  <span class="hljs-number">25</span>:     <span class="hljs-number">0x5587fa30c24a</span> - std::panicking::try::h2530c507ef432acf<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panicking.rs:<span class="hljs-number">343</span>:<span class="hljs-number">19</span><br>  <span class="hljs-number">26</span>:     <span class="hljs-number">0x5587fa30c24a</span> - std::panic::catch_unwind::h0c4984a63ffdd417<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/panic.rs:<span class="hljs-number">431</span>:<span class="hljs-number">14</span><br>  <span class="hljs-number">27</span>:     <span class="hljs-number">0x5587fa30c24a</span> - std::rt::lang_start_internal::h12392519f60c6396<br>                               at /rustc/<span class="hljs-number">88</span>f19c6dab716c6281af7602e30f413e809c5974/library/std/src/rt.rs:<span class="hljs-number">51</span>:<span class="hljs-number">25</span><br>  <span class="hljs-number">28</span>:     <span class="hljs-number">0x5587fa2f5b90</span> - std::rt::lang_start::h23cc615773b2ad9a<br>                               at /home/<span class="hljs-number">0</span>.users/kmiloo/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/rt.rs:<span class="hljs-number">65</span>:<span class="hljs-number">5</span><br>  <span class="hljs-number">29</span>:     <span class="hljs-number">0x5587fa2f4c7c</span> - main<br>  <span class="hljs-number">30</span>:     <span class="hljs-number">0x7f15d32f2b25</span> - __libc_start_main<br>  <span class="hljs-number">31</span>:     <span class="hljs-number">0x5587fa2f479e</span> - _start<br>  <span class="hljs-number">32</span>:                <span class="hljs-number">0x0</span> - &lt;unknown&gt;<br></code></pre></td></tr></table></figure>
+
+<h1 id="2-可恢复错误（recoverable）"><a href="#2-可恢复错误（recoverable）" class="headerlink" title="2 可恢复错误（recoverable）"></a>2 可恢复错误（recoverable）</h1><ul>
+<li>文件未找到、路径不存在等</li>
+<li>Result&lt;T, E&gt;</li>
+</ul>
+<h2 id="2-1-Result-枚举与可恢复的错误"><a href="#2-1-Result-枚举与可恢复的错误" class="headerlink" title="2.1 Result 枚举与可恢复的错误"></a>2.1 Result 枚举与可恢复的错误</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Result</span></span>&lt;T, E&gt; &#123;<br>    <span class="hljs-literal">Ok</span>(T),    <span class="hljs-comment">// T: 操作成功的情况下，Ok 变体里返回的数据类型</span><br>    <span class="hljs-literal">Err</span>(E),    <span class="hljs-comment">// E: 操作失败的情况下，Err变体里返回的错误类型</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::fs::File;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>);<br><br>    <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">match</span> f &#123;<br>        <span class="hljs-literal">Ok</span>(file) =&gt; file,<br>        <span class="hljs-literal">Err</span>(error) =&gt; &#123;<br>            <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Error opening file: &#123;:?&#125;&quot;</span>, error);<br>        &#125;,<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-2-匹配不同的错误"><a href="#2-2-匹配不同的错误" class="headerlink" title="2.2 匹配不同的错误"></a>2.2 匹配不同的错误</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// match</span><br><span class="hljs-keyword">use</span> std::fs::File;<br><span class="hljs-keyword">use</span> std::io::ErrorKind;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>);<br><br>    <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">match</span> f &#123;<br>        <span class="hljs-literal">Ok</span>(file) =&gt; file,<br>        <span class="hljs-literal">Err</span>(error) =&gt; <span class="hljs-keyword">match</span> error.kind() &#123;    <span class="hljs-comment">// kind 枚举由标准库提供，用于 match error 中的不同可能</span><br>            ErrorKind::NotFound =&gt; <span class="hljs-keyword">match</span> File::create(<span class="hljs-string">&quot;hello.txt&quot;</span>) &#123;    <span class="hljs-comment">// 如果没有发现文件，则创建一个</span><br>                <span class="hljs-literal">Ok</span>(fc) =&gt; fc,    <span class="hljs-comment">// 创建成功则返回file</span><br>                <span class="hljs-literal">Err</span>(e) =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Problem creating the file: &#123;:?&#125;&quot;</span>, e),    <span class="hljs-comment">// 创建失败则调用 panic!</span><br>            &#125;,<br>            other_error =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Problem opening the file: &#123;:?&#125;&quot;</span>, other_error),    <span class="hljs-comment">// 其他类型的错误</span><br>        &#125;,<br>    &#125;;<br>&#125;<br><br><span class="hljs-comment">// 闭包 closure</span><br><span class="hljs-keyword">use</span> std::fs::File;<br><span class="hljs-keyword">use</span> std::io::ErrorKind;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>).unwrap_or_else(|error| &#123;<br>        <span class="hljs-keyword">if</span> error.kind() == ErrorKind::NotFound &#123;<br>            File::create(<span class="hljs-string">&quot;hello.txt&quot;</span>).unwrap_or_else(|error| &#123;<br>                <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Problem creating the file: &#123;:?&#125;&quot;</span>, error);<br>            &#125;)<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Problem opening the file: &#123;:?&#125;&quot;</span>, error);<br>        &#125;<br>    &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-3-失败时-panic-的简写：unwrap-和-expect"><a href="#2-3-失败时-panic-的简写：unwrap-和-expect" class="headerlink" title="2.3 失败时 panic 的简写：unwrap 和 expect"></a>2.3 失败时 panic 的简写：unwrap 和 expect</h2><h3 id="2-3-1-unwrap"><a href="#2-3-1-unwrap" class="headerlink" title="2.3.1 unwrap"></a>2.3.1 unwrap</h3><ul>
+<li>如果 Result 值是成员 Ok，unwrap 会返回 Ok 中的值。</li>
+<li>如果 Result 是成员 Err，unwrap 会为调用 panic!。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 类似与 match 的快捷方式</span><br><span class="hljs-keyword">use</span> std::fs::File;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>).unwrap();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-3-2-expect"><a href="#2-3-2-expect" class="headerlink" title="2.3.2 expect"></a>2.3.2 expect</h3><ul>
+<li>类似 unwrap</li>
+<li>可以指定错误信息</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::fs::File;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>).expect(<span class="hljs-string">&quot;Failed to open hello.txt&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-4-传播错误"><a href="#2-4-传播错误" class="headerlink" title="2.4 传播错误"></a>2.4 传播错误</h2><ul>
+<li>在函数出处处理错误</li>
+<li>将错误返回给调用者</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 传播错误的流程示例</span><br><span class="hljs-keyword">use</span> std::io;<br><span class="hljs-keyword">use</span> std::io::Read;<br><span class="hljs-keyword">use</span> std::fs::File;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">String</span>, io::Error&gt; &#123;<br>    <span class="hljs-keyword">let</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>);    <span class="hljs-comment">// 尝试打开文件</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> f = <span class="hljs-keyword">match</span> f &#123;    <span class="hljs-comment">// 对 f 进行 match 操作</span><br>        <span class="hljs-literal">Ok</span>(file) =&gt; file,<br>        <span class="hljs-literal">Err</span>(e) =&gt; <span class="hljs-keyword">return</span> <span class="hljs-literal">Err</span>(e),<br>    &#125;;<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::new();<br><br>    <span class="hljs-keyword">match</span> f.read_to_string(&amp;<span class="hljs-keyword">mut</span> s) &#123;    <span class="hljs-comment">// 将文件中的内容读取到 变量 s</span><br>        <span class="hljs-literal">Ok</span>(_) =&gt; <span class="hljs-literal">Ok</span>(s),<br>        <span class="hljs-literal">Err</span>(e) =&gt; <span class="hljs-literal">Err</span>(e),<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-5-传播错误的简写：-运算符"><a href="#2-5-传播错误的简写：-运算符" class="headerlink" title="2.5 传播错误的简写：? 运算符"></a>2.5 传播错误的简写：? 运算符</h2><ul>
+<li>如果 Result 是 Ok: Ok 中的值就是表达式的结果，然后继续执行程序</li>
+<li>如果 Result 是 Err: Err 就是整个函数的返回值，就像使用了return</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::io;<br><span class="hljs-keyword">use</span> std::io::Read;<br><span class="hljs-keyword">use</span> std::fs::File;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">read_username_from_file</span></span>() -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">String</span>, io::Error&gt; &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> f = File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>)?;    <br>    <span class="hljs-comment">// 将 ? 作用于 result ， 意思是如果返回 ok 则继续执行，如果返回 err 则返回报错</span><br>    <span class="hljs-comment">// let mut f = match f &#123;    // 对 f 进行 match 操作</span><br>    <span class="hljs-comment">//     Ok(file) =&gt; file,</span><br>    <span class="hljs-comment">//     Err(e) =&gt; return Err(e),</span><br>    <span class="hljs-comment">// &#125;;</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::new();<br>    f.read_to_string(&amp;<span class="hljs-keyword">mut</span> s)?;<br>    <span class="hljs-literal">Ok</span>(s)    <span class="hljs-comment">// 如果前面全部执行成功，则返回 s ，</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> result = read_username_from_file();<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 代码优化</span><br><span class="hljs-keyword">use</span> std::io;<br><span class="hljs-keyword">use</span> std::io::Read;<br><span class="hljs-keyword">use</span> std::fs::File;<br><br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">read_username_from_file</span></span>() -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">String</span>, io::Error&gt; &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::new();<br>    File::open(<span class="hljs-string">&quot;hello.txt&quot;</span>)?.read_to_string(&amp;<span class="hljs-keyword">mut</span> s)?;<br>    <span class="hljs-comment">// 当两个 match 都成功的时候，函数返回 s 否则返回 Err</span><br>    <span class="hljs-literal">Ok</span>(s)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() &#123;<br>    <span class="hljs-keyword">let</span> result = read_username_from_file();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-5-1-与-from-函数"><a href="#2-5-1-与-from-函数" class="headerlink" title="2.5.1 ? 与 from 函数"></a>2.5.1 ? 与 from 函数</h3><ul>
+<li>Trait std::convert::From 上的 from 函数：用于错误之间的转换</li>
+<li>被 ? 所应用的错误，会隐式的被 from 函数处理</li>
+<li>当 ? 调用 from 函数时：他所接收的错误类型会被转化为当前函数的返回类型所定义的错误类型</li>
+<li>用途: 针对不同错误原因，返回同一种错误类型</li>
+</ul>
+<h1 id="3-什么时候使用-panic"><a href="#3-什么时候使用-panic" class="headerlink" title="3 什么时候使用 panic!"></a>3 什么时候使用 panic!</h1><ol>
+<li>在顶一个可能失败的函数时，优先考虑返回 Result</li>
+<li>否则 panic!</li>
+</ol>
+<h2 id="3-1-使用-panic-的情况"><a href="#3-1-使用-panic-的情况" class="headerlink" title="3.1 使用 panic! 的情况"></a>3.1 使用 panic! 的情况</h2><ol>
+<li>演示某些概念: unwrap</li>
+<li>原型代码: unwrap、expect</li>
+<li>测试: unwrap、expect</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/miloo/categories/%E8%AF%AD%E8%A8%80/">语言</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/Rust/">Rust</a>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/%E7%BB%83%E4%B9%A0/">练习</a>
+                    
+                      <a class="hover-with-bg" href="/miloo/tags/%E6%80%BB%E7%BB%93/">总结</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/miloo/2021/05/01/2021-05-01.%E7%A7%91%E6%8A%80&amp;%E4%B8%8D%E6%AD%A3%E7%BB%8F/">
+                        <span class="hidden-mobile">科技&不正经周刊 第6期 最简单的人工智能</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.lazyComments('gitalk-container', function() {
+      Fluid.utils.createCssLink('/miloo/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1.7.0/dist/gitalk.min.js', function () {
+        var gitalk = new Gitalk({
+          clientID: 'e8ce813c7c3eb1e836be',
+          clientSecret: '6d9b0e9b03701cf78d12040ef791b3d6275abbbe',
+          repo: 'miloo',
+          owner: 'Surmiloo',
+          admin: ["Surmiloo"],
+          id: '2c96aa294fb9ad6c67ecd5f4a7e1f985',
+          language: 'zh-CN',
+          labels: ["Gitalk"],
+          perPage: 50,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: true,
+          proxy: 'https://shielded-brushlands-08810.herokuapp.com/https://github.com/login/oauth/access_token'
+        });
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/miloo/js/debouncer.js" ></script>
+<script  src="/miloo/js/events.js" ></script>
+<script  src="/miloo/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    
+      <script  src="/miloo/js/img-lazyload.js" ></script>
+    
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/miloo/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/miloo/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/miloo/js/boot.js" ></script>
+
+
+</body>
+</html>
