@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      942 字
+      958 字
     </span>
   
 
@@ -284,7 +284,7 @@
 
 <h2 id="2-5-重新编译内核（精简内核、或者异构迁移）或者重新安装内核"><a href="#2-5-重新编译内核（精简内核、或者异构迁移）或者重新安装内核" class="headerlink" title="2.5 重新编译内核（精简内核、或者异构迁移）或者重新安装内核"></a>2.5 重新编译内核（精简内核、或者异构迁移）或者重新安装内核</h2><p>如果是从历史备份恢复操作系统到原硬件，分区的文件系统没有改变，则可以跳过此步</p>
 <p>如果重新分区且改变了挂载目录的文件系统或者迁移到异构的硬件设备上(例如：intel到amd、arm;或者添加了新的可驱动组件等)，则需要重新安装内核</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacman -S linux linux-firmware  <span class="hljs-comment">## 仅适用于archlinux </span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacman -S linux linux-firmware  <span class="hljs-comment">## 仅适用于archlinux </span><br><br>pacman -S xf86-video-ati  <span class="hljs-comment">## 安装必要驱动，amd核显驱动</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="2-6-重构引导项"><a href="#2-6-重构引导项" class="headerlink" title="2.6 重构引导项"></a>2.6 重构引导项</h2><p>修改 fstab 文件,如果使用 archlinux 的安装镜像作为 livedvd 则可以退出 chroot 环境，适用 genfstab 命令直接生成新的 fstab 文件，其他 livedvd 请手动修改</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">genfstab -U -p /mnt/arch &gt; /mnt/arch/etc/fstab <br></code></pre></td></tr></table></figure>
